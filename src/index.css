@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   font-family: 'Noto Sans', sans-serif;
@@ -17,6 +20,3 @@ body {
   min-height: 100vh;
   box-sizing: border-box;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
