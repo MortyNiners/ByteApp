@@ -6,11 +6,16 @@ import { CreateAccount } from '../components/CreateAccount.tsx';
 import { LogIn } from '../components/LogIn.tsx';
 import { ResetPassword } from '../components/ResetPassword.tsx';
 import { ChatRoom } from '../components/ChatRoom.tsx';
+import { AuthProvider } from '../context/AuthContext.tsx';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    ),
     children: [
       {
         path: '',
@@ -32,7 +37,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <PrivateRoutes />,
+    element: (
+      <AuthProvider>
+        <PrivateRoutes />
+      </AuthProvider>
+    ),
     children: [
       {
         path: 'chat-room',

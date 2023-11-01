@@ -1,16 +1,13 @@
 import { apiPost } from './apiClient.ts';
-import { UserCredentialsClientInterface } from '../interface/userRelatedInterfaces.ts';
+import { UserCredentialsClientInterface, UserLogInInterface } from '../interface/userRelatedInterfaces.ts';
+import { AxiosResponse } from 'axios';
 
-export const logInUser = async (userCredentialsClientInterface: UserCredentialsClientInterface): Promise<void> => {
-  const controller = new AbortController();
-  return apiPost<UserCredentialsClientInterface>('/auth/login', userCredentialsClientInterface, {
-    signal: controller.signal,
-  })
-    .then((res) => {
-      res.data;
-      controller.abort();
-    })
-    .catch((err) => {
-      throw err;
-    });
+export const logInUser = async (
+  userCredentialsClientInterface: UserCredentialsClientInterface,
+): Promise<UserLogInInterface> => {
+  const response: AxiosResponse<UserLogInInterface> = await apiPost<UserLogInInterface>(
+    '/auth/login',
+    userCredentialsClientInterface,
+  );
+  return response.data;
 };
