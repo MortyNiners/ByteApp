@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { TermsConditionsModal } from './TermsConditionsModal.tsx';
 import { createAccount } from '../services/creatAccount.ts';
 import { LoadingSpinner } from './LoadingSpinner.tsx';
+import { ToastNotification } from './ToastNotification.tsx';
 
 export const CreateAccount = () => {
   const [visible, setVisible] = useState(false);
@@ -22,6 +23,10 @@ export const CreateAccount = () => {
   const [checkMessage, setCheckMessage] = useState(false);
   const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const validateUsername = (input: string) => {
@@ -87,10 +92,20 @@ export const CreateAccount = () => {
           .then(() => {
             navigate('/');
             setIsLoading(false);
+            setSuccess(true);
+            setSuccessMessage('Verify and confirm your Email');
           })
           .catch((error) => {
-            throw error;
+            setError(true);
+            setErrorMessage(error.message);
             setIsLoading(false);
+            throw error;
+          })
+          .finally(() => {
+            setTimeout(() => {
+              setError(false);
+              setSuccess(false);
+            }, 2000);
           });
         break;
       default:
@@ -255,6 +270,13 @@ export const CreateAccount = () => {
       </section>
       {modal && <TermsConditionsModal checked={setIsChecked} modal={setModal} />}
       {isLoading && <LoadingSpinner />}
+      <ToastNotification
+        normal={false}
+        success={success}
+        error={error}
+        warning={false}
+        message={success ? successMessage : errorMessage}
+      />
     </>
   );
 };
