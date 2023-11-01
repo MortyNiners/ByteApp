@@ -1,14 +1,11 @@
 import { apiPost } from './apiClient.ts';
+import { UserCredentialsClientInterface } from '../interface/userRelatedInterfaces.ts';
+import { AxiosResponse } from 'axios';
 
-interface UserCredentialsClientInterface {
-  email: string;
-  username: string;
-  password: string;
-}
-
-export const createAccount = (userCredentialsClientInterface: UserCredentialsClientInterface): Promise<void> => {
+export const createAccount = async (
+  userCredentialsClientInterface: UserCredentialsClientInterface,
+): Promise<AxiosResponse> => {
   const controller = new AbortController();
-
   return apiPost<UserCredentialsClientInterface>('/auth/register', userCredentialsClientInterface, {
     signal: controller.signal,
   })

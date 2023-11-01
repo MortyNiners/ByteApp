@@ -5,6 +5,7 @@ import { PrivateRoutes } from './PrivateRoutes.tsx';
 import { CreateAccount } from '../components/CreateAccount.tsx';
 import { LogIn } from '../components/LogIn.tsx';
 import { ResetPassword } from '../components/ResetPassword.tsx';
+import { ChatRoom } from '../components/ChatRoom.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <PrivateRoutes />,
-    children: [{}],
+    children: [
+      {
+        path: 'chat-room',
+        element: <ChatRoom />,
+      },
+    ],
   },
 ]);
