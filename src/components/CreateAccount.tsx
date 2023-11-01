@@ -4,6 +4,7 @@ import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { useNavigate } from 'react-router-dom';
 import { TermsConditionsModal } from './TermsConditionsModal.tsx';
+import { createAccount } from '../services/creatAccount.ts';
 
 export const CreateAccount = () => {
   const [visible, setVisible] = useState(false);
@@ -72,6 +73,17 @@ export const CreateAccount = () => {
         setCheckMessage(!checkMessage);
         break;
       case !inputValid:
+        console.log('Please fill all fields');
+        break;
+      case inputValid && isChecked:
+        createAccount({
+          email,
+          password,
+          username: userName,
+        }).then(() => navigate('/'));
+        break;
+      default:
+        console.log('error register user');
     }
   };
 
@@ -187,6 +199,7 @@ export const CreateAccount = () => {
                       aria-describedby="terms"
                       type="checkbox"
                       checked={isChecked}
+                      onChange={(e) => {}}
                       onClick={() => setIsChecked(!isChecked)}
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-600"
                     />
