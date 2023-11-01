@@ -3,7 +3,16 @@ export interface UserCredentialsClientInterface {
   username: string;
   password: string;
 }
+
 export interface UserLogInInterface {
   refresh_token: string;
   access_token: string;
+}
+
+export interface NotificationInterface {
+  normal: boolean;
+  success: boolean;
+  error: boolean;
+  warning: boolean;
+  message: string;
 }

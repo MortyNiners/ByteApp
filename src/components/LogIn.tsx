@@ -4,9 +4,10 @@ import { SetStateAction, useContext, useState } from 'react';
 import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { AuthContext } from '../context/AuthContext.tsx';
+import { LoadingSpinner } from './LoadingSpinner.tsx';
 
 export const LogIn = () => {
-  const { login, setEmail: setEmailProvider, setPassword: setPasswordProvider } = useContext(AuthContext);
+  const { login, setEmail: setEmailProvider, setPassword: setPasswordProvider, isLoading } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
@@ -114,6 +115,7 @@ export const LogIn = () => {
           </div>
         </div>
       </section>
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };
