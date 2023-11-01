@@ -5,6 +5,7 @@ import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { useNavigate } from 'react-router-dom';
 import { TermsConditionsModal } from './TermsConditionsModal.tsx';
 import { createAccount } from '../services/creatAccount.ts';
+import { LoadingSpinner } from './LoadingSpinner.tsx';
 
 export const CreateAccount = () => {
   const [visible, setVisible] = useState(false);
@@ -20,6 +21,7 @@ export const CreateAccount = () => {
   const [isChecked, setIsChecked] = useState(false);
   const [checkMessage, setCheckMessage] = useState(false);
   const [modal, setModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const validateUsername = (input: string) => {
@@ -76,11 +78,20 @@ export const CreateAccount = () => {
         console.log('Please fill all fields');
         break;
       case inputValid && isChecked:
+        setIsLoading(true);
         createAccount({
           email,
           password,
           username: userName,
-        }).then(() => navigate('/'));
+        })
+          .then(() => {
+            navigate('/');
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            throw error;
+            setIsLoading(false);
+          });
         break;
       default:
         console.log('error register user');
@@ -199,7 +210,7 @@ export const CreateAccount = () => {
                       aria-describedby="terms"
                       type="checkbox"
                       checked={isChecked}
-                      onChange={(e) => {}}
+                      onChange={() => {}}
                       onClick={() => setIsChecked(!isChecked)}
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-600"
                     />
@@ -243,6 +254,7 @@ export const CreateAccount = () => {
         </div>
       </section>
       {modal && <TermsConditionsModal checked={setIsChecked} modal={setModal} />}
+      {isLoading && <LoadingSpinner />}
     </>
   );
 };
