@@ -7,18 +7,34 @@ import { AuthContext } from '../context/AuthContext.tsx';
 import { LoadingSpinner } from './LoadingSpinner.tsx';
 
 export const LogIn = () => {
-  const { login, setEmail: setEmailProvider, setPassword: setPasswordProvider, isLoading } = useContext(AuthContext);
+  const {
+    login,
+    setEmail: setEmailProvider,
+    setPassword: setPasswordProvider,
+    isLoading,
+    setUsername: setUserNameProvider,
+  } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const handleEmail = (event: { target: { value: SetStateAction<string> } }) => {
     const inputValue = event.target.value;
-    setEmail(inputValue);
-    setEmailProvider(inputValue);
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (typeof inputValue === 'string') {
+      const validateValue = pattern.test(inputValue);
+      if (validateValue) {
+        setEmail(inputValue);
+        setEmailProvider(inputValue);
+      } else {
+        setUserNameProvider(inputValue);
+        setEmail(inputValue);
+      }
+    }
   };
   const handlePassword = (event: { target: { value: SetStateAction<string> } }) => {
     const inputValue = event.target.value;
+
     setPassword(inputValue);
     setPasswordProvider(inputValue);
   };
