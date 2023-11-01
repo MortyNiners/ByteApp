@@ -1,10 +1,12 @@
 import Logo from '../assets/Logo/logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useContext, useState } from 'react';
 import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
+import { AuthContext } from '../context/AuthContext.tsx';
 
 export const LogIn = () => {
+  const { login, setEmail: setEmailProvider, setPassword: setPasswordProvider } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
@@ -12,10 +14,12 @@ export const LogIn = () => {
   const handleEmail = (event: { target: { value: SetStateAction<string> } }) => {
     const inputValue = event.target.value;
     setEmail(inputValue);
+    setEmailProvider(inputValue);
   };
   const handlePassword = (event: { target: { value: SetStateAction<string> } }) => {
     const inputValue = event.target.value;
     setPassword(inputValue);
+    setPasswordProvider(inputValue);
   };
   return (
     <>
@@ -27,7 +31,7 @@ export const LogIn = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-700 md:text-2xl ">
                 Log in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form onSubmit={login} className="space-y-4 md:space-y-6" action="#">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-700">Your email or @username </label>
                   <input
