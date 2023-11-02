@@ -1,18 +1,13 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../context/AuthContext.tsx';
+import { useQuery } from '@tanstack/react-query';
 
 export const PrivateRoutes = () => {
-  const { isAuth } = useContext(AuthContext);
+  const access_token = localStorage.getItem('access_token');
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuth) {
-      navigate('');
-    }
-  }, [isAuth, navigate]);
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+
+  const { data } = useQuery({
+    queryKey: ['access_token'],
+    queryFn: () => access_token,
+  });
+  return <>{data ? <Outlet /> : navigate('/')}</>;
 };
