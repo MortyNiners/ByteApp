@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { logInUser } from '../services/logInUser.ts';
 import { useNavigate } from 'react-router-dom';
 import { ToastNotification } from '../components/ToastNotification.tsx';
@@ -10,6 +10,7 @@ interface AuthContextInterface {
   setUsername: (inputValue: ((prevState: string) => string) | string) => void;
   isLoading: boolean;
   isAuth: boolean;
+  setIsAuth: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AuthContext = createContext<AuthContextInterface>({
@@ -25,6 +26,7 @@ export const AuthContext = createContext<AuthContextInterface>({
   },
   isLoading: false,
   isAuth: false,
+  setIsAuth: () => false,
 });
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const login = async () => {
@@ -42,8 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .then(({ refresh_token, access_token }) => {
         localStorage.setItem('refresh_token', refresh_token);
         localStorage.setItem('access_token', access_token);
-        navigate('chat-room');
-        setIsAuth(true);
+        navigate('main-page');
       })
       .catch((err) => {
         setIsLoading(false);
@@ -62,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
   return (
     <>
-      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, isAuth }}>
+      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, isAuth, setIsAuth }}>
         {children}
         <ToastNotification
           error={error}
