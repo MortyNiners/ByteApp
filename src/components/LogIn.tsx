@@ -14,6 +14,7 @@ export const LogIn = () => {
     isLoading,
     setUsername: setUserNameProvider,
   } = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
