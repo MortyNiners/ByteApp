@@ -9,6 +9,7 @@ interface AuthContextInterface {
   setPassword: (inputValue: ((prevState: string) => string) | string) => void;
   setUsername: (inputValue: ((prevState: string) => string) | string) => void;
   isLoading: boolean;
+  isAuth: boolean;
 }
 
 export const AuthContext = createContext<AuthContextInterface>({
@@ -23,6 +24,7 @@ export const AuthContext = createContext<AuthContextInterface>({
     return '';
   },
   isLoading: false,
+  isAuth: false,
 });
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState('');
@@ -31,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isAuth, setIsAuth] = useState(false);
   const navigate = useNavigate();
 
   const login = async () => {
@@ -39,24 +42,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .then(({ refresh_token, access_token }) => {
         localStorage.setItem('refresh_token', refresh_token);
         localStorage.setItem('access_token', access_token);
+        navigate('chat-room');
+        setIsAuth(true);
       })
-      .then(() => navigate('chat-room'))
       .catch((err) => {
         setIsLoading(false);
         setError(true);
         setErrorMessage(err.message);
+        setIsAuth(false);
+
         throw err;
       })
       .finally(() => {
         setTimeout(() => {
           setError(false);
         }, 2000);
-      })
-      .finally(() => setIsLoading(false));
+        setIsLoading(false);
+      });
   };
   return (
     <>
-      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading }}>
+      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, isAuth }}>
         {children}
         <ToastNotification
           error={error}

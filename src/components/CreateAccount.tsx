@@ -80,7 +80,11 @@ export const CreateAccount = () => {
         setCheckMessage(!checkMessage);
         break;
       case !inputValid:
-        console.log('Please fill all fields');
+        setErrorMessage('Please fill all fields!');
+        setError(true);
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
         break;
       case inputValid && isChecked:
         setIsLoading(true);

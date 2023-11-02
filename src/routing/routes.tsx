@@ -7,8 +7,6 @@ import { LogIn } from '../components/LogIn.tsx';
 import { ResetPassword } from '../components/ResetPassword.tsx';
 import { ChatRoom } from '../components/ChatRoom.tsx';
 import { AuthProvider } from '../context/AuthContext.tsx';
-import { ToastNotification } from '../components/ToastNotification.tsx';
-
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -33,10 +31,6 @@ export const router = createBrowserRouter([
       {
         path: 'reset-password',
         element: <ResetPassword />,
-      },
-      {
-        path: 'toast',
-        element: <ToastNotification />,
       },
     ],
   },
