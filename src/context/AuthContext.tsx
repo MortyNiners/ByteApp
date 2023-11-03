@@ -1,18 +1,17 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { logInUser } from '../services/logInUser.ts';
 import { useNavigate } from 'react-router-dom';
 import { ToastNotification } from '../components/ToastNotification.tsx';
 
 interface AuthContextInterface {
   login: () => void;
-  setEmail: (inputValue: ((prevState: string) => string) | string) => void;
+  setEmail: (inputValue: React.SetStateAction<string | null>) => void;
   setPassword: (inputValue: ((prevState: string) => string) | string) => void;
-  setUsername: (inputValue: ((prevState: string) => string) | string) => void;
+  setUsername: (inputValue: React.SetStateAction<string | null>) => void;
   isLoading: boolean;
   isAuth: boolean;
   setIsAuth: Dispatch<SetStateAction<boolean>>;
 }
-
 export const AuthContext = createContext<AuthContextInterface>({
   login: () => {},
   setEmail(): string {
@@ -29,9 +28,9 @@ export const AuthContext = createContext<AuthContextInterface>({
   setIsAuth: () => false,
 });
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState<string | null>('');
   const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState<string | null>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +43,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .then(({ refresh_token, access_token }) => {
         localStorage.setItem('refresh_token', refresh_token);
         localStorage.setItem('access_token', access_token);
-        navigate('main-page');
+        navigate('main-container');
+        setIsAuth(true);
       })
       .catch((err) => {
         setIsLoading(false);

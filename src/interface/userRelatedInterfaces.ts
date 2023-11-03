@@ -1,6 +1,6 @@
 export interface UserCredentialsClientInterface {
-  email: string;
-  username: string;
+  email: string | null;
+  username: string | null;
   password: string;
 }
 

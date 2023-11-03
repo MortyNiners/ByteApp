@@ -1,4 +1,4 @@
-export const AppToDo = () => {
+export const AppContainer = () => {
   return (
     <>
       <div>ChatRoom</div>

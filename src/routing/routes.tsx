@@ -5,7 +5,7 @@ import { PrivateRoutes } from './PrivateRoutes.tsx';
 import { CreateAccount } from '../components/CreateAccount.tsx';
 import { LogIn } from '../components/LogIn.tsx';
 import { ResetPassword } from '../components/ResetPassword.tsx';
-import { AppToDo } from '../components/AppToDo.tsx';
+import { AppContainer } from '../components/AppContainer.tsx';
 import { AuthProvider } from '../context/AuthContext.tsx';
 export const router = createBrowserRouter([
   {
@@ -43,8 +43,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: 'main-page',
-        element: <AppToDo />,
+        path: 'main-container',
+        element: <AppContainer />,
       },
     ],
   },
