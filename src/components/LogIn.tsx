@@ -1,6 +1,6 @@
 import Logo from '../assets/Logo/logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { SetStateAction, useContext, useState } from 'react';
+import React, { SetStateAction, useContext, useState } from 'react';
 import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { AuthContext } from '../context/AuthContext.tsx';
@@ -19,20 +19,21 @@ export const LogIn = () => {
   const [password, setPassword] = useState('');
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
-  const handleEmail = (event: { target: { value: SetStateAction<string> } }) => {
-    const inputValue = event.target.value;
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (typeof inputValue === 'string') {
-      const validateValue = pattern.test(inputValue);
-      if (validateValue) {
-        setEmail(inputValue);
-        setEmailProvider(inputValue);
-      } else {
-        setUserNameProvider(inputValue);
-        setEmail(inputValue);
-      }
+
+  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value as string;
+    const verify = inputValue.includes('@');
+    if (verify) {
+      setEmail(inputValue);
+      setEmailProvider(inputValue);
+      setUserNameProvider(null);
+    } else {
+      setEmail(inputValue);
+      setEmailProvider(null);
+      setUserNameProvider(inputValue);
     }
   };
+
   const handlePassword = (event: { target: { value: SetStateAction<string> } }) => {
     const inputValue = event.target.value;
 

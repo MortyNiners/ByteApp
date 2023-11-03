@@ -1,5 +1,5 @@
 import Logo from '../assets/Logo/logo.svg';
-import { FormEvent, SetStateAction, useEffect, useState } from 'react';
+import { FormEvent, SetStateAction, useEffect, useRef, useState } from 'react';
 import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { useNavigate } from 'react-router-dom';
@@ -29,10 +29,17 @@ export const CreateAccount = () => {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [usernameVerification, setUsernameVerification] = useState(true);
+  const prevUserNameRef = useRef(userName);
   const navigate = useNavigate();
+  const prevUserName = prevUserNameRef.current;
+
   useEffect(() => {
-    userNameVerification({ username: userName }).then((res) => setUsernameVerification(res.message));
+    prevUserNameRef.current = userName;
   }, [userName]);
+  useEffect(() => {
+    if (userName.length > 5)
+      userNameVerification({ username: userName }).then((res) => setUsernameVerification(res.message));
+  }, [userName, prevUserName]);
 
   const validateUsername = (input: string) => {
     const pattern = /^[a-zA-Z0-9_-]+$/;
