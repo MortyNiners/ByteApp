@@ -16,3 +16,11 @@ export interface NotificationInterface {
   warning: boolean;
   message: string;
 }
+
+export interface UsernameVerificationInterface {
+  username: string;
+}
+
+export interface UsernamePromiseInterface {
+  message: boolean;
+}
