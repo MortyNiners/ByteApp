@@ -1,5 +1,5 @@
 import Logo from '../assets/Logo/logo.svg';
-import { FormEvent, SetStateAction, useState } from 'react';
+import { FormEvent, SetStateAction, useEffect, useState } from 'react';
 import Eye from '../assets/CreateAcc/eye.svg';
 import EyeSlash from '../assets/CreateAcc/eye-slash.svg';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { TermsConditionsModal } from './TermsConditionsModal.tsx';
 import { createAccount } from '../services/creatAccount.ts';
 import { LoadingSpinner } from './LoadingSpinner.tsx';
 import { ToastNotification } from './ToastNotification.tsx';
+import { userNameVerification } from '../services/userNameVerification.ts';
 
 export const CreateAccount = () => {
   const [visible, setVisible] = useState(false);
@@ -27,7 +28,11 @@ export const CreateAccount = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [usernameVerification, setUsernameVerification] = useState(true);
   const navigate = useNavigate();
+  useEffect(() => {
+    userNameVerification({ username: userName }).then((res) => setUsernameVerification(res.message));
+  }, [userName]);
 
   const validateUsername = (input: string) => {
     const pattern = /^[a-zA-Z0-9_-]+$/;
@@ -116,6 +121,24 @@ export const CreateAccount = () => {
         console.log('error register user');
     }
   };
+  const usernameValidationMessage = () => {
+    if (!validUsername) {
+      return (
+        <>
+          <span className="text-red-500 text-[12px] font-medium">
+            Please use only letters, numbers, underscores, and hyphens.
+          </span>
+        </>
+      );
+    }
+    if (!usernameVerification) {
+      return (
+        <>
+          <span className="text-red-500 text-[12px] font-medium">This username is already taken</span>
+        </>
+      );
+    }
+  };
 
   return (
     <>
@@ -140,13 +163,7 @@ export const CreateAccount = () => {
                     className="bg-gray-50 border border-blue-300 outline-none focus:ring-2 sm:text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
                     placeholder="@username"
                   />
-                  {!validUsername && (
-                    <>
-                      <span className="text-red-500 text-[12px] font-medium">
-                        Please use only letters, numbers, underscores, and hyphens.
-                      </span>
-                    </>
-                  )}
+                  {usernameValidationMessage()}
                 </div>
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-700 ">Your email</label>
