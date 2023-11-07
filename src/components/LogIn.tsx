@@ -50,7 +50,7 @@ export const LogIn = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-700 md:text-2xl ">
                 Log in to your account
               </h1>
-              <form onSubmit={login} className="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6" onSubmit={login} action="#">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-700">Your email or @username </label>
                   <input
@@ -59,6 +59,7 @@ export const LogIn = () => {
                     id="email"
                     onChange={handleEmail}
                     value={email}
+                    autoComplete="username"
                     className="bg-gray-50 border border-blue-300  outline-none focus:ring-2 text-gray-700 sm:text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
                     placeholder="@company.com or @username"
                   />
@@ -73,6 +74,7 @@ export const LogIn = () => {
                       value={password}
                       onChange={handlePassword}
                       placeholder="••••••••"
+                      autoComplete={'current-password'}
                       className="bg-gray-50 border border-blue-300  outline-none focus:ring-2 text-gray-700 sm:text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
                     />
                     {visible ? (
@@ -114,6 +116,7 @@ export const LogIn = () => {
                   </span>
                 </div>
                 <button
+                  // onClick={login}
                   type="submit"
                   className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 >

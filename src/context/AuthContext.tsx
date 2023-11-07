@@ -2,6 +2,7 @@ import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } f
 import { logInUser } from '../services/logInUser.ts';
 import { useNavigate } from 'react-router-dom';
 import { ToastNotification } from '../components/ToastNotification.tsx';
+import { AxiosError } from 'axios';
 
 interface AuthContextInterface {
   login: () => void;
@@ -39,28 +40,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async () => {
     setIsLoading(true);
-    logInUser({ email, password, username })
-      .then(({ refresh_token, access_token }) => {
-        localStorage.setItem('refresh_token', refresh_token);
-        localStorage.setItem('access_token', access_token);
-        navigate('main-container');
-        setIsAuth(true);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(true);
-        setErrorMessage(err.message);
-        setIsAuth(false);
-
-        throw err;
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setError(false);
-        }, 2000);
-        setIsLoading(false);
-      });
+    try {
+      navigate('/main-container');
+      const response = await logInUser({ email, password, username });
+      localStorage.setItem('refresh_token', response.refresh_token);
+      localStorage.setItem('access_token', response.access_token);
+      setIsAuth(true);
+    } catch (e) {
+      setIsLoading(false);
+      setError(true);
+      setErrorMessage((e as AxiosError).message);
+      setIsAuth(false);
+    } finally {
+      setTimeout(() => {
+        setError(false);
+      }, 2000);
+      setIsLoading(false);
+    }
   };
+
   return (
     <>
       <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, isAuth, setIsAuth }}>

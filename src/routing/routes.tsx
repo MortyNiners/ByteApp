@@ -10,11 +10,7 @@ import { AuthProvider } from '../context/AuthContext.tsx';
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: (
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>
-    ),
+    element: <Layout />,
     children: [
       {
         path: '',
@@ -26,7 +22,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <LogIn />,
+        element: (
+          <AuthProvider>
+            <LogIn />
+          </AuthProvider>
+        ),
       },
       {
         path: 'reset-password',
