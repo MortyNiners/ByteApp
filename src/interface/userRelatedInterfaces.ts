@@ -5,8 +5,7 @@ export interface UserCredentialsClientInterface {
 }
 
 export interface UserLogInInterface {
-  refresh_token: string;
-  access_token: string;
+  message: string;
 }
 
 export interface NotificationInterface {
