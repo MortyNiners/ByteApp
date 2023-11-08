@@ -1,8 +1,7 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { logInUser } from '../services/logInUser.ts';
-import { useNavigate } from 'react-router-dom';
 import { ToastNotification } from '../components/ToastNotification.tsx';
-import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextInterface {
   login: () => void;
@@ -10,8 +9,8 @@ interface AuthContextInterface {
   setPassword: (inputValue: ((prevState: string) => string) | string) => void;
   setUsername: (inputValue: React.SetStateAction<string | null>) => void;
   isLoading: boolean;
-  isAuth: boolean;
-  setIsAuth: Dispatch<SetStateAction<boolean>>;
+  setError: Dispatch<SetStateAction<boolean>>;
+  setErrorMessage: Dispatch<SetStateAction<string>>;
 }
 export const AuthContext = createContext<AuthContextInterface>({
   login: () => {},
@@ -25,8 +24,8 @@ export const AuthContext = createContext<AuthContextInterface>({
     return '';
   },
   isLoading: false,
-  isAuth: false,
-  setIsAuth: () => false,
+  setError: () => false,
+  setErrorMessage: () => '',
 });
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [email, setEmail] = useState<string | null>('');
@@ -35,36 +34,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isAuth, setIsAuth] = useState<boolean>(false);
   const navigate = useNavigate();
-
   const login = async () => {
     setIsLoading(true);
-    setIsAuth(true);
-    try {
-      navigate('/main-container');
-      const response = await logInUser({ email, password, username });
-      localStorage.setItem('refresh_token', response.refresh_token);
-      localStorage.setItem('access_token', response.access_token);
-    } catch (e) {
-      setIsLoading(false);
-      setError(true);
-      setErrorMessage((e as AxiosError).message);
-      setIsAuth(false);
-    } finally {
-      setTimeout(() => {
-        setError(false);
-      }, 2000);
-      setIsLoading(false);
-    }
+
+    await logInUser({ email, password, username })
+      .then(() => {
+        navigate('/main-container');
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        // console.log(e);
+        if (e.response) {
+          if (e.response.status === 400) {
+            setError(true);
+            setErrorMessage('Bad Request: All fields should be filled');
+          } else {
+            setError(true);
+            setErrorMessage('An unexpected error occurred.');
+          }
+        } else {
+          setError(true);
+          setErrorMessage('Network error or server is down.');
+        }
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setError(false);
+        }, 2000);
+        setIsLoading(false);
+      });
   };
-  useEffect(() => {
-    localStorage.getItem('access_token') ? setIsAuth(true) : setIsAuth(false);
-  }, []);
 
   return (
     <>
-      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, isAuth, setIsAuth }}>
+      <AuthContext.Provider value={{ login, setEmail, setPassword, setUsername, isLoading, setError, setErrorMessage }}>
         {children}
         <ToastNotification
           error={error}

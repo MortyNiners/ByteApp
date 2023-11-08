@@ -13,6 +13,8 @@ export const LogIn = () => {
     setPassword: setPasswordProvider,
     isLoading,
     setUsername: setUserNameProvider,
+    setError,
+    setErrorMessage,
   } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
@@ -40,6 +42,23 @@ export const LogIn = () => {
     setPassword(inputValue);
     setPasswordProvider(inputValue);
   };
+
+  const fieldVerify = () => {
+    switch (true) {
+      case email.length === 0:
+        setError(true);
+        setErrorMessage('Email field is empty');
+        break;
+      case password.length === 0:
+        setError(true);
+        setErrorMessage('Password field is empty');
+        setTimeout(() => setError(false), 2000);
+        break;
+      case (email.length && password.length) > 1:
+        login();
+        break;
+    }
+  };
   return (
     <>
       <section>
@@ -50,7 +69,7 @@ export const LogIn = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-700 md:text-2xl ">
                 Log in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" onSubmit={login} action="#">
+              <form className="space-y-4 md:space-y-6">
                 <div>
                   <label className="block mb-2 text-sm font-medium text-gray-700">Your email or @username </label>
                   <input
@@ -116,8 +135,8 @@ export const LogIn = () => {
                   </span>
                 </div>
                 <button
-                  // onClick={login}
-                  type="submit"
+                  onClick={fieldVerify}
+                  type="button"
                   className="w-full text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
                 >
                   Sign in
