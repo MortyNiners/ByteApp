@@ -16,7 +16,7 @@ export const HeaderContainer = () => {
         <div className="grid grid-cols-12">
           <div className="col-span-3">
             <div className="border-[2px] h-[75px] border-t-0 border-gray-300 flex justify-center items-center">
-              <p className=" font-medium text-[20px] text-gray-400">Task Manager</p>
+              <p className=" font-medium text-[20px] text-gray-500">Task Manager</p>
             </div>
           </div>
           <div className="col-span-9  border-[2px]  border-t-0 border-x-0 border-gray-300 h-[75px]">
