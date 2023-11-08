@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { logInUser } from '../services/logInUser.ts';
 import { useNavigate } from 'react-router-dom';
 import { ToastNotification } from '../components/ToastNotification.tsx';
@@ -40,12 +40,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async () => {
     setIsLoading(true);
+    setIsAuth(true);
     try {
       navigate('/main-container');
       const response = await logInUser({ email, password, username });
       localStorage.setItem('refresh_token', response.refresh_token);
       localStorage.setItem('access_token', response.access_token);
-      setIsAuth(true);
     } catch (e) {
       setIsLoading(false);
       setError(true);
@@ -58,6 +58,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    localStorage.getItem('access_token') ? setIsAuth(true) : setIsAuth(false);
+  }, []);
 
   return (
     <>
