@@ -1,6 +1,6 @@
 export const Projects = () => {
   return (
-    <div className="min-w-full border-t-0 border-l-0  h-[300px]  border-[2px] border-gray-300">
+    <div className="min-w-full border-t-0 border-x-0  h-[300px]  border-[2px] border-gray-300">
       <div>
         <div className="pt-10 pl-10 flex items-center ">
           <span className="text-gray-500 font-bold text-xl mr-2">Projects</span>

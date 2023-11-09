@@ -3,21 +3,36 @@
 @tailwind utilities;
 
 :root {
-  font-family: 'Noto Sans', sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  min-height: 100vh;
+    font-family: 'Noto Sans', sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    min-height: 100vh;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  box-sizing: border-box;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    /*display: none;*/
+
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #a3a3a3;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
 }

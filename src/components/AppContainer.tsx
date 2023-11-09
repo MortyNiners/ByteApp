@@ -4,9 +4,9 @@ import { User } from './User.tsx';
 export const AppContainer = () => {
   return (
     <>
-      <section className="fixed min-w-full ">
+      <section className=" min-w-full  ">
         <HeaderContainer />
-        <div className="grid grid-cols-12">
+        <div className="grid grid-cols-12  min-h-full">
           <div className="col-span-3 ">
             <User />
           </div>

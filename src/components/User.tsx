@@ -1,14 +1,14 @@
 import MessageSvg from '../assets/Header/chat_white.svg';
 import SettingsSvg from '../assets/Header/settings.svg';
 import BellSvg from '../assets/Header/bell.svg';
-import { Category } from './Projects.tsx';
 import { Team } from './Team.tsx';
+import { Projects } from './Projects.tsx';
 
 export const User = () => {
   return (
     <>
       <aside className="">
-        <div className=" min-w-full border-t-0 border-l-0  min-h-[520px]   border-[2px] border-gray-300">
+        <div className=" min-w-full border-t-0 border-l-0 border-x-0  min-h-[520px]   border-[2px] border-gray-300">
           <div className="flex flex-col  items-center ">
             <div>
               <img src="" alt="" />
@@ -73,7 +73,7 @@ export const User = () => {
             </div>
           </div>
         </div>
-        <Category />
+        <Projects />
         <Team />
       </aside>
     </>
