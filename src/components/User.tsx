@@ -1,10 +1,24 @@
 import MessageSvg from '../assets/Header/chat_white.svg';
 import SettingsSvg from '../assets/Header/settings.svg';
 import BellSvg from '../assets/Header/bell.svg';
+import ProfileSvg from '../assets/Profile/profile_white.svg';
+import AddSvg from '../assets/Profile/add.svg';
 import { Team } from './Team.tsx';
 import { Projects } from './Projects.tsx';
+import { ChangeEvent, useState } from 'react';
+import { addImage } from '../services/addImage.ts';
 
 export const User = () => {
+  const [selectedFile, setSelectedFile] = useState<File[]>([]);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      setSelectedFile((prevState) => [...prevState, fileList[0]]);
+    }
+  };
+  const submitFile = () => {
+    addImage({}, selectedFile);
+  };
   return (
     <>
       <aside className="">
@@ -13,7 +27,17 @@ export const User = () => {
             <div>
               <img src="" alt="" />
             </div>
-            <div className=" mt-10 w-[100px] h-[100px] bg-gray-400 rounded-full"></div>
+            <div className=" mt-10 w-[100px] h-[100px] flex justify-center items-center bg-gray-400 rounded-full cursor-pointer">
+              <img src={AddSvg} alt="" className="h-14 w-14 cursor-pointer" />
+              <input
+                id="fileInput1"
+                accept="image/*"
+                type="file"
+                onChange={handleFileChange}
+                onSubmit={}
+                className="absolute w-10 h-10  opacity-0 cursor-pointer"
+              />
+            </div>
             <div className="mt-2">
               <span className="font-bold text-s">User Name</span>
             </div>

@@ -19,12 +19,12 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
+  overflow: hidden;
     box-sizing: border-box;
 }
 
 ::-webkit-scrollbar {
     width: 10px;
-    /*display: none;*/
 
 }
 
@@ -35,4 +35,7 @@ body {
 
 ::-webkit-scrollbar-track {
     background: transparent;
+}
+input[type=file]::-webkit-file-upload-button {
+    cursor: pointer;
 }
