@@ -36,6 +36,3 @@ body {
 ::-webkit-scrollbar-track {
     background: transparent;
 }
-input[type=file]::-webkit-file-upload-button {
-    cursor: pointer;
-}
