@@ -4,6 +4,11 @@ export interface UserCredentialsClientInterface {
   password: string;
 }
 
+export interface MeInterface {
+  id: string;
+  email: string;
+  username: string;
+}
 export interface UserLogInInterface {
   message: string;
 }

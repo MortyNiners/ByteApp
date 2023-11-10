@@ -1,19 +1,27 @@
 import MessageSvg from '../assets/Header/chat_white.svg';
 import SettingsSvg from '../assets/Header/settings.svg';
 import BellSvg from '../assets/Header/bell.svg';
+import AddSvg from '../assets/Profile/add.svg';
 import { Team } from './Team.tsx';
 import { Projects } from './Projects.tsx';
+import { AddImageModal } from './AddImageModal.tsx';
+import { useState } from 'react';
 
 export const User = () => {
+  const [modal, setModal] = useState(false);
+
   return (
     <>
+      {modal && <AddImageModal modal={setModal} />}
       <aside className="">
         <div className=" min-w-full border-t-0 border-l-0 border-x-0  min-h-[520px]   border-[2px] border-gray-300">
-          <div className="flex flex-col  items-center ">
-            <div>
-              <img src="" alt="" />
+          <div className="flex flex-col  items-center">
+            <div
+              onClick={() => setModal(true)}
+              className=" mt-10 w-[100px] h-[100px] flex justify-center items-center bg-gray-400 rounded-full cursor-pointer"
+            >
+              <img src={AddSvg} alt="" className="h-14 w-14 cursor-pointer" />
             </div>
-            <div className=" mt-10 w-[100px] h-[100px] bg-gray-400 rounded-full"></div>
             <div className="mt-2">
               <span className="font-bold text-s">User Name</span>
             </div>
@@ -62,7 +70,7 @@ export const User = () => {
               </div>
               <div className="flex flex-col justify-center items-center">
                 <span className="text-xl  font-bold text-gray-800">22</span>
-                <span className="mt-2 text-lg font-bold text-gray-500">To do</span>
+                <span className="mt-2 text-lg font-bold text-gray-500 w-[50px]">To do</span>
                 <span className="self-center text-sm font-bold text-gray-500">task</span>
               </div>
               <div className="flex flex-col">
